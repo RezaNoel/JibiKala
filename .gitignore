@@ -1,3 +1,6 @@
 # created by virtualenv automatically
 .idea
 lib
+**\__pycache__\
+products\__pycache__
+
