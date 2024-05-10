@@ -7,6 +7,9 @@ from django.views import View
 def home(request):
     return render(request, 'products/index.html')
 class single_product(View):
-    template_name=None
-    def get(self,request):
-        return render(request, self.template_name)
+    def get(self,request,category=None,slug=None):
+        if not category:
+            return render(request, 'products/single-product.html', {'slug': slug})
+
+        return render(request, 'products/single-product.html', {'category': category, 'slug': slug})
+
