@@ -3,8 +3,10 @@ from .views import home,single_product
 
 urlpatterns = [
     path('', home,name='home'),
-    
-    re_path(r'^(?P<category>[\w-]*)/(?P<slug>[\w-]+)/$', single_product.as_view(),name='single_product'),
-    re_path(r'(?P<slug>[\w-]+)/$', single_product.as_view(),name='single_product'),
+    path('<slug:slug>/', single_product.as_view(),name='single_product'),
+    path('<str:category>/<slug:slug>/', single_product.as_view(),name='single_product'),
+
+    # re_path(r'^(?P<category>[\w-]*)/(?P<slug:slug>[\w-]+)/$', single_product.as_view(),name='single_product'),
+    # re_path(r'(?P<slug>[\w-]+)/$', single_product.as_view(),name='single_product'),
 
 ]

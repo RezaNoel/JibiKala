@@ -1,9 +1,15 @@
 from django.contrib import admin
-from .models import phoneProducts,productAttributs,productBrands,productColors,productOptions,productStorages
+from .models import Product,ProductAttribute,ProductBrand,ProductColor,ProductOption,ProductStorage,ProductComment,ProductImage
 # Register your models here.
-admin.site.register(phoneProducts)
-admin.site.register(productStorages)
-admin.site.register(productOptions)
-admin.site.register(productColors)
-admin.site.register(productBrands)
-admin.site.register(productAttributs)
+
+class ProductAdmin(admin.ModelAdmin):
+    filter_horizontal = ['colors']
+
+admin.site.register(Product,ProductAdmin)
+admin.site.register(ProductStorage)
+admin.site.register(ProductOption)
+admin.site.register(ProductColor)
+admin.site.register(ProductBrand)
+admin.site.register(ProductAttribute)
+admin.site.register(ProductImage)
+admin.site.register(ProductComment)

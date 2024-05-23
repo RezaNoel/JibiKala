@@ -16,32 +16,25 @@ Cart
                         <div class="table-responsive checkout-content default">
                             <table class="table">
                                 <tbody>
-                                    <tr class="checkout-item">
+                                {% for user_cart in user_carts %}
+                                     <tr class="checkout-item">
                                         <td>
                                             <img src="assets/img/cart/1335154.jpg" alt="">
                                             <button class="checkout-btn-remove"></button>
                                         </td>
                                         <td>
                                             <h3 class="checkout-title">
-                                                گوشی موبایل اپل مدل iPhone X ظرفیت 256 گیگابایت
+                                                گوشی موبایل {{ user_cart.product.brand }} مدل  رنگ {{ user_cart.product.color }}{{ user_cart.product.model }} ظرفیت
+                                                {{ user_cart.product.storage }} گیگابایت
                                             </h3>
                                         </td>
-                                        <td>۱ عدد</td>
-                                        <td>۱۵,۳۹۰,۰۰۰ تومان</td>
+                                        <td>{{user_cart.quantity}} عدد</td>
+                                        <td>{{user_cart.get_price}} تومان</td>
                                     </tr>
-                                    <tr class="checkout-item">
-                                        <td>
-                                            <img src="assets/img/cart/1335154.jpg" alt="">
-                                            <button class="checkout-btn-remove"></button>
-                                        </td>
-                                        <td>
-                                            <h3 class="checkout-title">
-                                                گوشی موبایل اپل مدل iPhone X ظرفیت 256 گیگابایت
-                                            </h3>
-                                        </td>
-                                        <td>۱ عدد</td>
-                                        <td>۱۵,۳۹۰,۰۰۰ تومان</td>
-                                    </tr>
+                                {% endfor %}
+
+
+
                                 </tbody>
                             </table>
                         </div>
@@ -51,7 +44,7 @@ Cart
                             <div class="checkout-summary">
                                 <div class="checkout-summary-main">
                                     <ul class="checkout-summary-summary">
-                                        <li><span>مبلغ کل (۱ کالا)</span><span>۱۵,۳۹۰,۰۰۰ تومان</span></li>
+                                        <li><span>مبلغ کل ({{ user_carts.count }} کالا)</span><span>{{ total_amount }} تومان</span></li>
                                         <li>
                                             <span>هزینه ارسال</span>
                                             <span>وابسته به آدرس<span class="wiki wiki-holder"><span
@@ -79,7 +72,7 @@ Cart
                                     <div class="checkout-summary-content">
                                         <div class="checkout-summary-price-title">مبلغ قابل پرداخت:</div>
                                         <div class="checkout-summary-price-value">
-                                            <span class="checkout-summary-price-value-amount">۱۵,۳۹۰,۰۰۰</span>تومان
+                                            <span class="checkout-summary-price-value-amount">{{ total_amount }} </span>تومان
                                         </div>
                                         <a href="#" class="selenium-next-step-shipping">
                                             <div class="parent-btn">
