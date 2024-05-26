@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from django.utils import timezone
-from django.contrib.auth.models import User
+from accounts.models import User
 
 
 
@@ -55,6 +55,8 @@ class Product(models.Model):
 
     def get_price(self):
         return "{:,}".format(self.price)
+    def offprice(self):
+        return "{:,}".format(self.price+1000000)
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.model)

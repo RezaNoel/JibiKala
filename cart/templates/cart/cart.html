@@ -19,12 +19,29 @@ Cart
                                 {% for user_cart in user_carts %}
                                      <tr class="checkout-item">
                                         <td>
-                                            <img src="assets/img/cart/1335154.jpg" alt="">
-                                            <button class="checkout-btn-remove"></button>
+                                           <form method="post">
+                                               {% csrf_token %}
+                                               {% for image in user_cart.product.images.all %}
+                                                    {% if forloop.counter == 1 %}
+                                                        <img src="{{ image.image.url }}" class="w-25" alt="">
+                                                    {% endif %}
+                                                {% endfor %}
+{#                                                <img src="{% static 'img/cart/1335154.jpg' %}" >#}
+                                                <input type="hidden" name="cart_item_id" value="{{ user_cart.id }}">
+                                                <button type="submit" name="remove" class="checkout-btn-remove"></button>
+                                           </form>
                                         </td>
                                         <td>
                                             <h3 class="checkout-title">
-                                                گوشی موبایل {{ user_cart.product.brand }} مدل  رنگ {{ user_cart.product.color }}{{ user_cart.product.model }} ظرفیت
+                                                {% if user_cart.product.type == 'S' %}
+                                                       گوشی موبایل
+                                                    {% elif user_cart.product.type == 'T' %}
+                                                        تبلت
+                                                    {% elif user_cart.product.type == 'L' %}
+                                                        لپتاپ
+                                                    {% elif user_cart.product.type == 'P' %}
+                                                        کامپیوتر
+                                                    {% endif %} {{ user_cart.product.brand.faname }} مدل {{ user_cart.product.model }} رنگ {{ user_cart.color.faname }} ظرفیت
                                                 {{ user_cart.product.storage }} گیگابایت
                                             </h3>
                                         </td>
@@ -74,7 +91,7 @@ Cart
                                         <div class="checkout-summary-price-value">
                                             <span class="checkout-summary-price-value-amount">{{ total_amount }} </span>تومان
                                         </div>
-                                        <a href="#" class="selenium-next-step-shipping">
+                                        <a href="{% url 'shopping' %}" class="selenium-next-step-shipping">
                                             <div class="parent-btn">
                                                 <button class="dk-btn dk-btn-info">
                                                     ادامه ثبت سفارش

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static%}
 {% block title %}
-Login
+Profile
 {% endblock %}
 {% block content %}
 
@@ -21,30 +21,47 @@ Login
                                         <div class="col-sm-12 col-md-6">
                                             <p>
                                                 <span class="title">نام و نام خانوادگی :</span>
-                                                <span>جلال بهرامی راد</span>
+                                                <span>{% if user.first_name and user.last_name %}
+                                                {{  user.first_name}} {{ user.last_name }}
+                                                    {% else %}
+                                                    اطلاعات خود را کامل کنید
+                                                {% endif %}
+                                                    </span>
                                             </p>
                                         </div>
                                         <div class="col-sm-12 col-md-6">
                                             <p>
                                                 <span class="title">پست الکترونیک :</span>
-                                                <span>info@gmail.com</span>
+                                                <span>{% if user.email %}
+                                                {{ user.email }}
+                                                    {% else %}
+                                                    اطلاعات خود را کامل کنید
+                                                {% endif %}</span>
                                             </p>
                                         </div>
                                         <div class="col-sm-12 col-md-6">
                                             <p>
                                                 <span class="title">شماره تلفن همراه:</span>
-                                                <span>-</span>
+                                                <span>{% if user.phone_number %}
+                                                {{  user.phone_number}}
+                                                    {% else %}
+                                                    اطلاعات خود را کامل کنید
+                                                {% endif %}</span>
                                             </p>
                                         </div>
                                         <div class="col-sm-12 col-md-6">
                                             <p>
                                                 <span class="title">کد ملی :</span>
-                                                <span>-</span>
+                                                <span>{% if user.national_code %}
+                                                {{  user.national_code}}
+                                                    {% else %}
+                                                    اطلاعات خود را کامل کنید
+                                                {% endif %}</span>
                                             </p>
                                         </div>
 
                                         <div class="col-12 text-center">
-                                            <a href="profile-additional-info.html" class="btn-link-border form-account-link">
+                                            <a href="{% url 'profile-edit' %}" class="btn-link-border form-account-link">
                                                 ویرایش اطلاعات شخصی
                                             </a>
                                         </div>
@@ -58,44 +75,42 @@ Login
                                 <div class="content-section default">
                                     <div class="row">
                                         <div class="col-12">
-                                            <div class="profile-recent-fav-row">
-                                                <a href="#" class="profile-recent-fav-col profile-recent-fav-col-thumb">
-                                                    <img src="assets/img/cart/4560621.jpg"></a>
-                                                <div class="profile-recent-fav-col profile-recent-fav-col-title">
-                                                    <a href="#">
-                                                        <h4 class="profile-recent-fav-name">
-                                                            گوشی موبایل اپل مدل iPhone XR دو سیم کارت ظرفیت 256 گیگابایت
-                                                        </h4>
+                                            {% for cart in carts %}
+                                                <div class="profile-recent-fav-row">
+                                                    <a href="#" class="profile-recent-fav-col profile-recent-fav-col-thumb">
+                                                        {% for image in cart.product.images.all %}
+                                                            {% if forloop.counter == 1 %}
+                                                                <img  src="{{ image.image.url }}"/>
+                                                            {% endif %}
+                                                        {% endfor %}
                                                     </a>
-                                                    <div class="profile-recent-fav-price">ناموجود</div>
+                                                    <div class="profile-recent-fav-col profile-recent-fav-col-title">
+                                                        <a href="#">
+                                                            <h4 class="profile-recent-fav-name">
+                                                                گوشی موبایل {{ cart.product.brand.faname }} مدل {{ cart.product.model }} رنگ {{ cart.color.faname }} ظرفیت
+                                                {{ cart.product.storage }} گیگابایت
+                                                            </h4>
+                                                            <span class="profile-recent-fav-name">
+                                                                {{ cart.quantity }} عدد
+                                                            </span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="profile-recent-fav-col profile-recent-fav-col-actions">
+                                                        <form method="post">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="cart_item_id" value="{{ cart.id }}">
+                                                            <button type="submit" class="btn-action btn-action-remove">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                                 </div>
-                                                <div class="profile-recent-fav-col profile-recent-fav-col-actions">
-                                                    <button class="btn-action btn-action-remove">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="profile-recent-fav-row">
-                                                <a href="#" class="profile-recent-fav-col profile-recent-fav-col-thumb">
-                                                    <img src="assets/img/cart/3794614.jpg"></a>
-                                                <div class="profile-recent-fav-col profile-recent-fav-col-title">
-                                                    <a href="#">
-                                                        <h4 class="profile-recent-fav-name">
-                                                            گوشی موبایل اپل مدل iPhone XR دو سیم کارت ظرفیت 256 گیگابایت
-                                                        </h4>
-                                                    </a>
-                                                    <div class="profile-recent-fav-price">ناموجود</div>
-                                                </div>
-                                                <div class="profile-recent-fav-col profile-recent-fav-col-actions">
-                                                    <button class="btn-action btn-action-remove">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
+                                            {% endfor %}
+
                                         </div>
                                         <div class="col-12 text-center">
-                                            <a href="#" class="btn-link-border form-account-link">
-                                                مشاهده و ویرایش لیست مورد علاقه
+                                            <a href="{% url 'cart' %}" class="btn-link-border form-account-link">
+                                                مشاهده و ویرایش سبد خرید
                                             </a>
                                         </div>
                                     </div>
@@ -108,53 +123,14 @@ Login
                         <div class="profile-box">
                             <div class="profile-box-header">
                                 <div class="profile-box-avatar">
-                                    <img src="assets/img/svg/user.svg" alt="">
+                                    <img src="{% static 'img/svg/user.svg' %}" alt="">
                                 </div>
-                                <button data-toggle="modal" data-target="#myModal" class="profile-box-btn-edit">
-                                    <i class="fa fa-pencil"></i>
-                                </button>
-                                <!-- Modal Core -->
-                                <div class="modal-share modal-width-custom modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                <h4 class="modal-title" id="myModalLabel">تغییر نمایه کاربری شما</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <ul class="profile-avatars default text-center">
-                                                    <li>
-                                                        <img class="profile-avatars-item" src="assets/img/svg/user.svg"></img>
-                                                    </li>
-                                                    <li>
-                                                        <img class="profile-avatars-item" src="assets/img/svg/avatar-1.svg"></img>
-                                                    </li>
-                                                    <li>
-                                                        <img class="profile-avatars-item" src="assets/img/svg/avatar-2.svg"></img>
-                                                    </li>
-                                                    <li>
-                                                        <img class="profile-avatars-item" src="assets/img/svg/avatar-3.svg"></img>
-                                                    </li>
-                                                    <li>
-                                                        <img class="profile-avatars-item" src="assets/img/svg/avatar-4.svg"></img>
-                                                    </li>
-                                                    <li>
-                                                        <img class="profile-avatars-item" src="assets/img/svg/avatar-5.svg"></img>
-                                                    </li>
-                                                    <li>
-                                                        <img class="profile-avatars-item" src="assets/img/svg/avatar-6.svg"></img>
-                                                    </li>
-                                                    <li>
-                                                        <img class="profile-avatars-item" src="assets/img/svg/avatar-7.svg"></img>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Modal Core -->
                             </div>
-                            <div class="profile-box-username">بهرامی راد</div>
+                            <div class="profile-box-username">{% if user.first_name and user.last_name %}
+                                                {{  user.first_name}} {{ user.last_name }}
+                                                    {% else %}
+                                {{ user.username}}
+                                                {% endif %}</div>
                             <div class="profile-box-tabs">
                                 <a href="{% url 'password_change' %}" class="profile-box-tab profile-box-tab-access">
                                     <i class="now-ui-icons ui-1_lock-circle-open"></i>
@@ -173,25 +149,21 @@ Login
                                     حساب کاربری شما
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right text-right">
-                                    <a href="profile.html" class="dropdown-item active-menu">
+                                    <a href="{% url 'profile' %}" class="dropdown-item active-menu">
                                     <i class="now-ui-icons users_single-02"></i>
                                     پروفایل
                                     </a>
-                                    <a href="profile-orders.html" class="dropdown-item">
+                                    <a href="{% url 'cart' %}" class="dropdown-item">
                                     <i class="now-ui-icons shopping_basket"></i>
-                                    همه سفارش ها
+                                    لیست سبد خرید
                                     </a>
-                                    <a href="profile-orders-return.html" class="dropdown-item">
-                                    <i class="now-ui-icons files_single-copy-04"></i>
-                                    درخواست مرجوعی
-                                    </a>
-                                    <a href="profile-favorites.html" class="dropdown-item">
-                                    <i class="now-ui-icons ui-2_favourite-28"></i>
-                                    لیست علاقمندی ها
-                                    </a>
-                                    <a href="profile-personal-info.html" class="dropdown-item">
+                                    <a href="{% url 'profile-edit' %}" class="dropdown-item">
                                     <i class="now-ui-icons business_badge"></i>
                                     اطلاعات شخصی
+                                    </a>
+                                    <a href="{% url 'address-edit' %}" class="dropdown-item">
+                                    <i class="now-ui-icons business_badge"></i>
+                                    آدرس ها
                                     </a>
                                 </div>
                             </div>
@@ -200,21 +172,27 @@ Login
                             <div class="profile-menu-header">حساب کاربری شما</div>
                             <ul class="profile-menu-items">
                                 <li>
-                                    <a href="profile.html" class="active">
+                                    <a href="{% url 'profile' %}" class="active">
                                         <i class="now-ui-icons users_single-02"></i>
                                         پروفایل
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="profile-orders.html">
+                                    <a href="{% url 'cart' %}">
                                         <i class="now-ui-icons shopping_basket"></i>
                                         لیست سبد خرید
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="profile-personal-info.html">
+                                    <a href="{% url 'profile-edit' %}">
                                         <i class="now-ui-icons business_badge"></i>
                                         اطلاعات شخصی
+                                    </a>
+                                </li>
+                                 <li>
+                                    <a href="{% url 'address-edit' %}">
+                                        <i class="now-ui-icons business_badge"></i>
+                                        آدرس ها
                                     </a>
                                 </li>
                             </ul>

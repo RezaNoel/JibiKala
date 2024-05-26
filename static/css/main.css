@@ -2926,6 +2926,9 @@ footer.main-footer .copyright p {
 .pager-next:before {
     content: "\00bb";
 }
+.pager-perv:before {
+    content: "\00AB";
+}
 
 /* Search Page */
 

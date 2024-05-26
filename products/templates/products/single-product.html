@@ -18,19 +18,32 @@ JibiKala
                         <nav>
                             <ul class="breadcrumb">
                                 <li>
-                                    <a href="#"><span>فروشگاه اینترنتی دیجی کالا</span></a>
+                                    <a href="{% url 'home' %}"><span>فروشگاه اینترنتی جیبی کالا</span></a>
                                 </li>
                                 <li>
                                     <a href="#"><span>کالای دیجیتال</span></a>
                                 </li>
                                 <li>
-                                    <a href="#"><span>موبایل</span></a>
+                                    <a href="#"><span>{% if product.type == 'S' %}
+                                        <a href="{% url 'category' category='S' %}">گوشی موبایل</a>
+                                                    {% elif product.type == 'T' %}
+                                        <a href="{% url 'category' category='T' %}">تبلت</a>
+                                                    {% elif product.type == 'L' %}
+                                        <a href="{% url 'category' category='L' %}">لپتاپ</a>
+                                                    {% elif product.type == 'P' %}
+                                        <a href="{% url 'category' category='P' %}">کامپیوتر</a>
+                                                    {% endif %}</span></a>
                                 </li>
                                 <li>
-                                    <a href="#"><span>گوشی موبایل</span></a>
-                                </li>
-                                <li>
-                                    <span>گوشی موبایل {{ product.brand.faname }} مدل {{ product.model}} ظرفیت {{ product.storage }} گیگابایت</span>
+                                    <span>{% if product.type == 'S' %}
+                                                       گوشی موبایل
+                                                    {% elif product.type == 'T' %}
+                                                        تبلت
+                                                    {% elif product.type == 'L' %}
+                                                        لپتاپ
+                                                    {% elif product.type == 'P' %}
+                                                        کامپیوتر
+                                                    {% endif %} {{ product.brand.faname }} مدل {{ product.model}} ظرفیت {{ product.storage }} گیگابایت</span>
                                 </li>
                             </ul>
                         </nav>
@@ -123,30 +136,40 @@ JibiKala
                                     <!-- Modal Core -->
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-sm-12">
+                                <form method="post">
+                                                {% csrf_token %}
                                     <div class="product-title default">
                                         <h1>
-                                            گوشی موبایل {{ product.brand.faname }} مدل {{ product.model}} ظرفیت {{ product.storage }} گیگابایت
+                                            {% if product.type == 'S' %}
+                                                       گوشی موبایل
+                                                    {% elif product.type == 'T' %}
+                                                        تبلت
+                                                    {% elif product.type == 'L' %}
+                                                        لپتاپ
+                                                    {% elif product.type == 'P' %}
+                                                        کامپیوتر
+                                                    {% endif %} {{ product.brand.faname }} مدل {{ product.model}} ظرفیت {{ product.storage }} گیگابایت
                                             <span>{{ product.brand }} {{ product.model }} {{ product.storage }}GB Mobile Phone</span></h1>
                                     </div>
                                     <div class="product-directory default">
                                         <ul>
                                             <li>
                                                 <span>برند</span> :
-                                                <span class="product-brand-title">
+                                                <a href="{% url 'brand' brand=product.brand %}" class="product-brand-title">
                                                     {{product.brand}}
-                                                </span>
+                                                </a>
                                             </li>
                                             <li>
                                                 <span>دسته‌بندی</span> :
                                                 <a href="#" class="btn-link-border">
                                                     {% if product.type == 'S' %}
-                                                       گوشی هوشمند
+                                        <a href="{% url 'category' category='S' %}">گوشی موبایل</a>
                                                     {% elif product.type == 'T' %}
-                                                        تبلت
+                                        <a href="{% url 'category' category='T' %}">تبلت</a>
                                                     {% elif product.type == 'L' %}
-                                                        لپتاپ
+                                        <a href="{% url 'category' category='L' %}">لپتاپ</a>
                                                     {% elif product.type == 'P' %}
-                                                        کامپیوتر رومیزی
+                                        <a href="{% url 'category' category='P' %}">کامپیوتر</a>
                                                     {% endif %}
                                                 </a>
                                             </li>
@@ -157,7 +180,7 @@ JibiKala
                                         <br>
                                         {% for color in colors %}
                                             <div class="radio">
-                                            <input type="radio" name="radio1" id="radio{{ forloop.counter }}" value="option{{ forloop.counter }}" {% if forloop.counter == 1 %}checked=""{% endif %} >
+                                            <input type="radio" name="radio1" id="radio{{ forloop.counter }}" value="{{ color.id }}" {% if forloop.counter == 1 %}checked=""{% endif %} >
                                             <label for="radio{{ forloop.counter }}">
                                                 {{ color.faname }}
                                             </label>
@@ -173,7 +196,6 @@ JibiKala
                                         <i class="fa fa-check-circle"></i>
                                         <p class="product-guarantee-text">گارانتی اصالت و سلامت فیزیکی کالا</p>
                                     </div>
-
                                     <div class="price-product defualt">
                                         <div class="price-value">
                                             <span> {{product.get_price}} </span>
@@ -183,15 +205,15 @@ JibiKala
                                     </div>
                                     <div class="product-add default">
                                         <div class="parent-btn">
-                                            <form method="post">
-                                                {% csrf_token %}
+
                                             <button type="submit"  class="dk-btn dk-btn-info">
                                                 افزودن به سبد خرید
                                                 <i class="now-ui-icons shopping_cart-simple"></i>
                                             </button>
-                                                </form>
+
                                         </div>
                                     </div>
+                                </form>
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-sm-12 center-breakpoint">
                                                                        <div class="product-params default">
